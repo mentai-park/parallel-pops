@@ -8,7 +8,10 @@ export const Character: FC<
       <img
         src={`./images/${type}.png`}
         alt=""
-        style={{ width: "6rem", height: "6rem" }}
+        style={{
+          width: type == "god" ? "16rem" : "6rem",
+          height: type == "god" ? "16rem" : "6rem",
+        }}
       />
       <div
         style={{
