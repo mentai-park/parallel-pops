@@ -95,6 +95,12 @@ const Page: FC<ComponentProps<"section">> = ({ ...props }) => {
         <source src="./movie.mp4" type="video/mp4" />
         お使いのブラウザは video タグをサポートしていません。
       </video>
+      <section style={{ padding: "1rem" }}>
+        <h4>見る角度を変えれば毎日がもっと楽しくなる</h4>
+        <p>
+          プレイヤーからのトピックの入力に対して、3つの視点を持つキャラクター（リアリ＝現実主義・オプティ＝楽観主義・ウォリ＝心配性）が意見をぶつけ合い、最後に統合した結論を出してひらめき（悟り）を得るwebアプリケーションです。
+        </p>
+      </section>
       {!chatList && (
         <>
           <h2>題材をえらんで！</h2>
