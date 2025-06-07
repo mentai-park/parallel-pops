@@ -36,7 +36,7 @@ const Page: FC<ComponentProps<"section">> = ({ ...props }) => {
     if (isSending) return
     setIsSending(true)
     try {
-      setLoadingText("シナリオを生成中...")
+      setLoadingText?.("シナリオを生成中...")
       const response = await openai.chat.completions.create({
         model: "gpt-4o-mini",
         messages: [
@@ -56,7 +56,7 @@ const Page: FC<ComponentProps<"section">> = ({ ...props }) => {
       ])
     } finally {
       setIsSending(false)
-      setLoadingText(undefined)
+      setLoadingText?.(undefined)
     }
   }
   return (
