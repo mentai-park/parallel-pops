@@ -8,6 +8,7 @@ import { Character } from "../components/modules/character"
 import { SpeechRecognitionModal } from "../components/modules/speech-recognition-modal"
 import { openai } from "../services/openai"
 import { scenarioPrompt } from "../services/prompt"
+import { useLoadingContext } from "../services/loading-provider"
 
 const initialTopics: Topic[] = [
   {
@@ -28,29 +29,35 @@ const Page: FC<ComponentProps<"section">> = ({ ...props }) => {
   const [isOpenSpeechRecognitionModal, setIsOpenSpeechRecognitionModal] =
     useState<boolean>(false)
   const [isSending, setIsSending] = useState<boolean>(false)
+  const { setLoadingText } = useLoadingContext()
 
   const handleCreateScenario = async () => {
     if (!selectedTopic) return
     if (isSending) return
     setIsSending(true)
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        {
-          role: "user",
-          content: scenarioPrompt(selectedTopic.body),
-        },
-      ],
-    })
-    const responseText = JSON.parse(
-      response.choices[0].message.content
-    ) as ChatResponseType
-    setChatList([
-      ...responseText.conversations,
-      ...responseText.individual_conclusions,
-      responseText.overall_conclusion,
-    ])
-    setIsSending(false)
+    try {
+      setLoadingText("シナリオを生成中...")
+      const response = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            role: "user",
+            content: scenarioPrompt(selectedTopic.body),
+          },
+        ],
+      })
+      const responseText = JSON.parse(
+        response.choices[0].message.content
+      ) as ChatResponseType
+      setChatList([
+        ...responseText.conversations,
+        ...responseText.individual_conclusions,
+        responseText.overall_conclusion,
+      ])
+    } finally {
+      setIsSending(false)
+      setLoadingText(undefined)
+    }
   }
   return (
     <section style={{ padding: "1rem" }} {...props}>

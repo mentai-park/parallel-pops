@@ -37,8 +37,8 @@ export const SpeechRecognitionModal: FC<
           padding: "2rem",
           maxWidth: "90vw",
           maxHeight: "90vh",
-          minWidth: "20rem",
-          minHeight: "10rem",
+          minWidth: "24rem",
+          minHeight: "16rem",
           boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
           display: "flex",
           flexDirection: "column",
@@ -46,7 +46,14 @@ export const SpeechRecognitionModal: FC<
         }}
       >
         <textarea
-          style={{ width: "100%", height: "100%", border: "none", flexGrow: 1 }}
+          style={{
+            width: "100%",
+            height: "100%",
+            border: "none",
+            flexGrow: 1,
+            fontSize: "1.5rem",
+            padding: "1rem",
+          }}
           disabled={true}
           value={transcript}
         />
