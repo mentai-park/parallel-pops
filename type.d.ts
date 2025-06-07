@@ -14,12 +14,6 @@ type ChatResponseType = {
       text: string
     },
   ]
-  individual_conclusions: [
-    {
-      character: Character
-      text: string
-    },
-  ]
   overall_conclusion: {
     character: "god"
     text: string

@@ -38,7 +38,7 @@ const Page: FC<ComponentProps<"section">> = ({ ...props }) => {
     try {
       setLoadingText?.("シナリオを生成中...")
       const response = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
+        model: "gpt-4o",
         messages: [
           {
             role: "user",
@@ -51,7 +51,6 @@ const Page: FC<ComponentProps<"section">> = ({ ...props }) => {
       ) as ChatResponseType
       setChatList([
         ...responseText.conversations,
-        ...responseText.individual_conclusions,
         responseText.overall_conclusion,
       ])
     } finally {
@@ -61,60 +60,81 @@ const Page: FC<ComponentProps<"section">> = ({ ...props }) => {
   }
   return (
     <section style={{ padding: "1rem" }} {...props}>
-      <h2>題材をえらんで！</h2>
-      <div style={{ padding: "1rem" }}>
-        <Button onClick={() => setIsOpenSpeechRecognitionModal(true)}>
-          音声入力
-        </Button>
-        {isOpenSpeechRecognitionModal && (
-          <SpeechRecognitionModal
-            onClose={(text) => {
-              setIsOpenSpeechRecognitionModal(false)
-              if (text) {
-                setTopics([
-                  ...topics,
-                  {
-                    title: "音声入力",
-                    body: text,
-                  },
-                ])
-              }
+      {!chatList && (
+        <>
+          <h2>題材をえらんで！</h2>
+          <div style={{ padding: "1rem" }}>
+            <Button onClick={() => setIsOpenSpeechRecognitionModal(true)}>
+              音声入力
+            </Button>
+            {isOpenSpeechRecognitionModal && (
+              <SpeechRecognitionModal
+                onClose={(text) => {
+                  setIsOpenSpeechRecognitionModal(false)
+                  if (text) {
+                    setTopics([
+                      ...topics,
+                      {
+                        title: "音声入力",
+                        body: text,
+                      },
+                    ])
+                  }
+                }}
+              />
+            )}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              gap: ".5rem",
+              flexWrap: "wrap",
+              padding: "1rem",
             }}
-          />
-        )}
-      </div>
-      <div
-        style={{
-          display: "flex",
-          gap: ".5rem",
-          flexWrap: "wrap",
-          padding: "1rem",
-        }}
-      >
-        {topics.map((topic, i) => (
-          <Card
-            key={i}
-            onSelect={() => setSelectedTopic(topic)}
-            selected={topic === selectedTopic}
           >
-            <h3>{topic.title}</h3>
-            <p>{topic.body}</p>
-          </Card>
-        ))}
-      </div>
-      <div style={{ padding: "1rem" }}>
-        <Button
-          onClick={async () => await handleCreateScenario()}
-          disabled={!selectedTopic}
+            {topics.map((topic, i) => (
+              <Card
+                key={i}
+                onSelect={() => setSelectedTopic(topic)}
+                selected={topic === selectedTopic}
+              >
+                <h3>{topic.title}</h3>
+                <p>{topic.body}</p>
+              </Card>
+            ))}
+          </div>
+          <div style={{ padding: "1rem" }}>
+            <Button
+              onClick={async () => await handleCreateScenario()}
+              disabled={!selectedTopic}
+            >
+              シナリオ生成
+            </Button>
+          </div>
+        </>
+      )}
+      {chatList && (
+        <div
+          style={{
+            margin: "auto",
+            maxWidth: "48rem",
+          }}
         >
-          シナリオ生成
-        </Button>
-      </div>
-
-      <div>
-        {chatList?.map((chat, i) => (
-          <Character key={i} type={chat.character} text={chat.text} />
-        ))}
+          {selectedTopic && (
+            <Card style={{ maxWidth: "100%" }}>
+              <h3>{selectedTopic.title}</h3>
+              <p>{selectedTopic.body}</p>
+            </Card>
+          )}
+          {chatList?.map((chat, i) => (
+            <Character key={i} type={chat.character} text={chat.text} />
+          ))}
+        </div>
+      )}
+      <div
+        style={{ padding: "1rem", display: "flex", justifyContent: "right" }}
+      >
+        <Button onClick={() => setChatList(undefined)}>クリア</Button>
       </div>
     </section>
   )

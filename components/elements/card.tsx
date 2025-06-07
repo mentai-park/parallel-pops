@@ -9,6 +9,7 @@ export const Card: FC<CardProps> = ({
   selected = false,
   onSelect,
   children,
+  style,
   ...props
 }) => {
   return (
@@ -24,6 +25,7 @@ export const Card: FC<CardProps> = ({
         cursor: "pointer",
         transition: "border 0.2s ease-in-out",
         maxWidth: "24rem",
+        ...style,
       }}
       {...props}
     >

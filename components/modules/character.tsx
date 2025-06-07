@@ -13,10 +13,9 @@ export const Character: FC<
       <div
         style={{
           position: "relative",
-          background: "#f0f0f0",
+          background: "#ddf0f0",
           borderRadius: "1rem",
           padding: "0.75rem 1rem",
-          maxWidth: "48rem",
           boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
         }}
       >
@@ -30,7 +29,7 @@ export const Character: FC<
             height: "0",
             borderTop: "0.5rem solid transparent",
             borderBottom: "0.5rem solid transparent",
-            borderRight: "0.75rem solid #f0f0f0",
+            borderRight: "0.75rem solid #ddf0f0",
           }}
         />
         {text}
