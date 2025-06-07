@@ -16,6 +16,15 @@ const initialTopics: Topic[] = [
     title: "PC忘れ事件",
     body: "ハッカソンに出るために東京から福岡まできました。\nしかし、福岡に着いた時にPCを忘れてしまったことに気づきました。\nPCがないとハッカソンで力になれません。どうしたらいいでしょうか？",
   },
+  {
+    title: "コメ適正価格は3000円 生産者団体 - Yahoo!ニュース",
+    body: "コメの価格高騰が続くなか、生産者団体の会長は、3000円が適正価格との考えを示しました",
+  },
+  {
+    title:
+      "20代の7割以上が「電話に苦手意識」 もう電話での連絡はやめるべきか？ 企業の対応は？ #エキスパートトピ（横山信弘） - エキスパート - Yahoo!ニュース",
+    body: "「電話が怖くて会社を辞めた」そんな衝撃的な声がSNSで話題になっている。調査によると、20代の実に75%が電話対応に苦手意識を持っているという。SNS世代にとって電話は「なじみのないツール」なのだ",
+  },
 ]
 
 const Page: FC<ComponentProps<"section">> = ({ ...props }) => {
@@ -33,10 +42,9 @@ const Page: FC<ComponentProps<"section">> = ({ ...props }) => {
   const fetchNews = async () => {
     const {
       data: { articles },
-    } = await axios("https://newsapi.org/v2/everything", {
+    } = await axios.get("http://news.google.com/rss/search", {
       params: {
         q: "米",
-        apiKey: "5dca2532a49d4b20b5689d32c025f805",
       },
     })
     articles.slice(0, 5).map((item) => {
