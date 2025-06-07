@@ -30,6 +30,9 @@ const Page: FC<ComponentProps<"section">> = ({ ...props }) => {
     useState<boolean>(false)
   const [isSending, setIsSending] = useState<boolean>(false)
   const { setLoadingText } = useLoadingContext()
+  const [apiKey, setApiKey] = useState<string | undefined>(
+    process.env.NEXT_PUBLIC_OPENAI_API_KEY
+  )
 
   const handleCreateScenario = async () => {
     if (!selectedTopic) return
@@ -37,7 +40,7 @@ const Page: FC<ComponentProps<"section">> = ({ ...props }) => {
     setIsSending(true)
     try {
       setLoadingText?.("シナリオを生成中...")
-      const response = await openai.chat.completions.create({
+      const response = await openai(apiKey).chat.completions.create({
         model: "gpt-4o",
         messages: [
           {
@@ -135,6 +138,23 @@ const Page: FC<ComponentProps<"section">> = ({ ...props }) => {
         style={{ padding: "1rem", display: "flex", justifyContent: "right" }}
       >
         <Button onClick={() => setChatList(undefined)}>クリア</Button>
+      </div>
+
+      <div
+        style={{
+          position: "fixed",
+          bottom: 0,
+          display: "flex",
+          gap: ".5rem",
+          padding: "1rem",
+        }}
+      >
+        <label htmlFor="apiKey">OpenAI API Key</label>
+        <input
+          type="password"
+          value={apiKey}
+          onChange={({ target }) => setApiKey(target.value)}
+        />
       </div>
     </section>
   )
