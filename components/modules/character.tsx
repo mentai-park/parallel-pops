@@ -6,7 +6,7 @@ export const Character: FC<
   return (
     <div style={{ display: "flex", gap: "1rem", padding: "1rem" }} {...props}>
       <img
-        src={`/images/${type}.png`}
+        src={`./images/${type}.png`}
         alt=""
         style={{ width: "6rem", height: "6rem" }}
       />
