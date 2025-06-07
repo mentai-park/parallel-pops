@@ -82,6 +82,11 @@ const Page: FC<ComponentProps<"section">> = ({ ...props }) => {
   }
   return (
     <section style={{ padding: "1rem" }} {...props}>
+      <video style={{ width: "100%" }} controls>
+        <track kind="captions" srcLang="ja" label="Japanese" />
+        <source src="/movie.mp4" type="video/mp4" />
+        お使いのブラウザは video タグをサポートしていません。
+      </video>
       {!chatList && (
         <>
           <h2>題材をえらんで！</h2>
