@@ -12,7 +12,11 @@ export default function RootLayout({
     <html lang="ja">
       <body
         style={{
-          background: "linear-gradient(to bottom right, #f0fff0, #e6ffe6)",
+          backgroundImage: "url('/images/background.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "bottom",
+          backgroundRepeat: "no-repeat",
+          backgroundAttachment: "fixed",
         }}
       >
         <header style={{ padding: "1rem", textAlign: "center" }}>
