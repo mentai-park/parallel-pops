@@ -1,13 +1,15 @@
 "use client"
 
-import React, { ComponentProps, FC } from "react"
+import type { ComponentProps, FC } from "react"
+import { useState } from "react"
 import { Card } from "../components/elements/card"
 import { Button } from "../components/elements/button"
 import { Character } from "../components/modules/character"
+import { SpeechRecognitionModal } from "../components/modules/speech-recognition-modal"
 
 type Topic = { title: string; body: string }
 
-const topics: Topic[] = [
+const initialTopics: Topic[] = [
   {
     title: "PC忘れ事件",
     body: "ハッカソンに出るために東京から福岡まできました。\nしかし、福岡に着いた時にPCを忘れてしまったことに気づきました。\nPCがないとハッカソンで力になれません。どうしたらいいでしょうか？",
@@ -40,10 +42,34 @@ const chatList: Chat[] = [
 ]
 
 const Page: FC<ComponentProps<"section">> = ({ ...props }) => {
-  const [selectedTopic, setSelectedTopic] = React.useState<Topic>()
+  const [selectedTopic, setSelectedTopic] = useState<Topic>()
+  const [topics, setTopics] = useState<Topic[]>(initialTopics)
+  const [isOpenSpeechRecognitionModal, setIsOpenSpeechRecognitionModal] =
+    useState<boolean>(false)
   return (
     <section style={{ padding: "1rem" }} {...props}>
       <h2>題材をえらんで！</h2>
+      <div style={{ padding: "1rem" }}>
+        <Button onClick={() => setIsOpenSpeechRecognitionModal(true)}>
+          音声入力
+        </Button>
+        {isOpenSpeechRecognitionModal && (
+          <SpeechRecognitionModal
+            onClose={(text) => {
+              setIsOpenSpeechRecognitionModal(false)
+              if (text) {
+                setTopics([
+                  ...topics,
+                  {
+                    title: "音声入力",
+                    body: text,
+                  },
+                ])
+              }
+            }}
+          />
+        )}
+      </div>
       <div
         style={{
           display: "flex",
@@ -64,7 +90,9 @@ const Page: FC<ComponentProps<"section">> = ({ ...props }) => {
         ))}
       </div>
       <div style={{ padding: "1rem" }}>
-        <Button onClick={() => {}}>シナリオ生成</Button>
+        <Button onClick={() => {}} disabled={!selectedTopic}>
+          シナリオ生成
+        </Button>
       </div>
 
       <div>

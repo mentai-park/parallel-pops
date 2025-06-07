@@ -10,7 +10,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body>
+      <body
+        style={{
+          background: "linear-gradient(to bottom right, #f0fff0, #e6ffe6)",
+        }}
+      >
         <header style={{ padding: "1rem", textAlign: "center" }}>
           <h1
             style={{

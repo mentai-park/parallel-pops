@@ -16,6 +16,7 @@ export const Card: FC<CardProps> = ({
       aria-hidden="true"
       onClick={onSelect}
       style={{
+        background: "#fefefe",
         borderRadius: ".5rem",
         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
         padding: "1rem",
