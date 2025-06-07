@@ -10,7 +10,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body>{children}</body>
+      <body>
+        <header>
+          <h1>Parallel Pops!</h1>
+        </header>
+        <main>{children}</main>
+      </body>
     </html>
   )
 }
