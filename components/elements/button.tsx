@@ -6,7 +6,7 @@ export const Button: FC<ComponentProps<"button">> = ({ ...props }) => {
       style={{
         borderRadius: ".5rem",
         border: "none",
-        backgroundColor: "#966",
+        background: "linear-gradient(90deg, #3b82f6, #1e40af)",
         color: "white",
         padding: ".5rem 1rem",
       }}

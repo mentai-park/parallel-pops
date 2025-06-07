@@ -11,8 +11,17 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
-        <header>
-          <h1>Parallel Pops!</h1>
+        <header style={{ padding: "1rem", textAlign: "center" }}>
+          <h1
+            style={{
+              background: "linear-gradient(90deg, #3b82f6, #1e40af)",
+              fontSize: "1.5rem",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            Parallel Pops!
+          </h1>
         </header>
         <main>{children}</main>
       </body>
