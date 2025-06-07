@@ -1,7 +1,7 @@
 import { FC, ComponentProps } from "react"
 
 export const Character: FC<
-  ComponentProps<"div"> & { type: "wor" | "rea" | "opt"; text: string }
+  ComponentProps<"div"> & { type: Character; text: string }
 > = ({ type, text, ...props }) => {
   return (
     <div style={{ display: "flex", gap: "1rem", padding: "1rem" }} {...props}>

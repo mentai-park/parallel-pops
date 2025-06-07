@@ -9,8 +9,6 @@ import { SpeechRecognitionModal } from "../components/modules/speech-recognition
 import { openai } from "../services/openai"
 import { scenarioPrompt } from "../services/prompt"
 
-type Topic = { title: string; body: string }
-
 const initialTopics: Topic[] = [
   {
     title: "PC忘れ事件",
@@ -22,32 +20,6 @@ const initialTopics: Topic[] = [
     body: "生活支援では物価高や家賃の上昇に備え、「東京都公式アプリ（東京アプリ）」を通じ、子育て世帯が賃貸に住む場合は月２万円分、住宅を購入した場合は１００万円分のポイントを、それぞれ付与するとした。福祉政策では女性の健康向上に焦点を当て、生理痛や更年期障害の無料検診などの実施を盛り込んだ。",
   },
 ]
-
-type Character = "wor" | "rea" | "opt" | "god"
-
-type Chat = {
-  character: Character
-  text: string
-}
-
-type ResponseType = {
-  conversations: [
-    {
-      character: Character
-      text: string
-    },
-  ]
-  individual_conclusions: [
-    {
-      character: Character
-      text: string
-    },
-  ]
-  overall_conclusion: {
-    character: "god"
-    text: string
-  }
-}
 
 const Page: FC<ComponentProps<"section">> = ({ ...props }) => {
   const [selectedTopic, setSelectedTopic] = useState<Topic>()
@@ -70,13 +42,13 @@ const Page: FC<ComponentProps<"section">> = ({ ...props }) => {
         },
       ],
     })
-    console.log(response.choices[0].message.content)
     const responseText = JSON.parse(
       response.choices[0].message.content
-    ) as ResponseType
+    ) as ChatResponseType
     setChatList([
       ...responseText.conversations,
       ...responseText.individual_conclusions,
+      responseText.overall_conclusion,
     ])
     setIsSending(false)
   }
