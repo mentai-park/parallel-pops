@@ -98,27 +98,6 @@ const Page: FC<ComponentProps<"section">> = ({ ...props }) => {
       {!chatList && (
         <>
           <h2>題材をえらんで！</h2>
-          <div style={{ padding: "1rem" }}>
-            <Button onClick={() => setIsOpenSpeechRecognitionModal(true)}>
-              音声入力
-            </Button>
-            {isOpenSpeechRecognitionModal && (
-              <SpeechRecognitionModal
-                onClose={(text) => {
-                  setIsOpenSpeechRecognitionModal(false)
-                  if (text) {
-                    setTopics([
-                      ...topics,
-                      {
-                        title: "音声入力",
-                        body: text,
-                      },
-                    ])
-                  }
-                }}
-              />
-            )}
-          </div>
           <div
             style={{
               display: "flex",
@@ -138,7 +117,26 @@ const Page: FC<ComponentProps<"section">> = ({ ...props }) => {
               </Card>
             ))}
           </div>
-          <div style={{ padding: "1rem" }}>
+          <div style={{ padding: "1rem", gap: ".5rem", display: "flex" }}>
+            <Button onClick={() => setIsOpenSpeechRecognitionModal(true)}>
+              題材を音声で入力する
+            </Button>
+            {isOpenSpeechRecognitionModal && (
+              <SpeechRecognitionModal
+                onClose={(text) => {
+                  setIsOpenSpeechRecognitionModal(false)
+                  if (text) {
+                    setTopics([
+                      ...topics,
+                      {
+                        title: "音声入力",
+                        body: text,
+                      },
+                    ])
+                  }
+                }}
+              />
+            )}
             <Button
               onClick={async () => await handleCreateScenario()}
               disabled={!selectedTopic}
