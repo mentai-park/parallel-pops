@@ -6,6 +6,8 @@ import { Card } from "../components/elements/card"
 import { Button } from "../components/elements/button"
 import { Character } from "../components/modules/character"
 import { SpeechRecognitionModal } from "../components/modules/speech-recognition-modal"
+import { openai } from "../services/openai"
+import { scenarioPrompt } from "../services/prompt"
 
 type Topic = { title: string; body: string }
 
@@ -21,31 +23,63 @@ const initialTopics: Topic[] = [
   },
 ]
 
+type Character = "wor" | "rea" | "opt" | "god"
+
 type Chat = {
-  type: "wor" | "rea" | "opt"
+  character: Character
   text: string
 }
 
-const chatList: Chat[] = [
-  {
-    type: "wor",
-    text: "こんにちは！ハッカソンの準備はできていますか？",
-  },
-  {
-    type: "rea",
-    text: "こんにちは！ハッカソンの準備はできていますか？",
-  },
-  {
-    type: "opt",
-    text: "こんにちは！ハッカソンの準備はできていますか？\n\nPCを忘れたのは大変ですね。福岡でPCを借りることができる場所を探してみましょうか？",
-  },
-]
+type ResponseType = {
+  conversations: [
+    {
+      character: Character
+      text: string
+    },
+  ]
+  individual_conclusions: [
+    {
+      character: Character
+      text: string
+    },
+  ]
+  overall_conclusion: {
+    character: "god"
+    text: string
+  }
+}
 
 const Page: FC<ComponentProps<"section">> = ({ ...props }) => {
   const [selectedTopic, setSelectedTopic] = useState<Topic>()
   const [topics, setTopics] = useState<Topic[]>(initialTopics)
+  const [chatList, setChatList] = useState<Chat[]>()
   const [isOpenSpeechRecognitionModal, setIsOpenSpeechRecognitionModal] =
     useState<boolean>(false)
+  const [isSending, setIsSending] = useState<boolean>(false)
+
+  const handleCreateScenario = async () => {
+    if (!selectedTopic) return
+    if (isSending) return
+    setIsSending(true)
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "user",
+          content: scenarioPrompt(selectedTopic.body),
+        },
+      ],
+    })
+    console.log(response.choices[0].message.content)
+    const responseText = JSON.parse(
+      response.choices[0].message.content
+    ) as ResponseType
+    setChatList([
+      ...responseText.conversations,
+      ...responseText.individual_conclusions,
+    ])
+    setIsSending(false)
+  }
   return (
     <section style={{ padding: "1rem" }} {...props}>
       <h2>題材をえらんで！</h2>
@@ -90,14 +124,17 @@ const Page: FC<ComponentProps<"section">> = ({ ...props }) => {
         ))}
       </div>
       <div style={{ padding: "1rem" }}>
-        <Button onClick={() => {}} disabled={!selectedTopic}>
+        <Button
+          onClick={async () => await handleCreateScenario()}
+          disabled={!selectedTopic}
+        >
           シナリオ生成
         </Button>
       </div>
 
       <div>
-        {chatList.map((chat, i) => (
-          <Character key={i} type={chat.type} text={chat.text} />
+        {chatList?.map((chat, i) => (
+          <Character key={i} type={chat.character} text={chat.text} />
         ))}
       </div>
     </section>
